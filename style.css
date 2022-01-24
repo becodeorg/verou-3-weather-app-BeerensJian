@@ -2,8 +2,8 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Dongle', sans-serif;
-    
+    font-family: serif;
+    box-sizing: border-box;
 }
 .searchBar {
     text-align: center;
@@ -11,11 +11,27 @@
 }
 
 .displayData {
-    width: 400px;
-    height: 300px;
+    width: 80%;
+    height: 100%px;
     background-color: rgb(231, 233, 233);
     margin: auto;
+    text-align: center;
 }
+.displayData h1 {
+    font-size: 50px;
+    font-weight: bold;
+    color: rgb(60, 65, 65);
+    padding: 40px;
+}
+.card {
+    border:1px solid rgb(185, 176, 176);
+    max-width: 50%;
+}
+.card .day {
+    font-size: 30px;
+    background-color: rgb(214, 213, 213)
+}
+
 
 input[type="text"] {
     height: 40px;
