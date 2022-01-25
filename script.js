@@ -5,13 +5,10 @@ const displayDiv = document.querySelector(".displayData")
 const cardcontainer = displayDiv.children[1]
 
 import Data from "./config.js";
-console.log(Data.key);  
-
-
-
+  
 button.addEventListener("click", (e) => {
     e.preventDefault()
-    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=" + key)
+    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=" + Data.key)
     .then(response => response.json())
     .then(data => {
         // display the city name
@@ -30,6 +27,7 @@ button.addEventListener("click", (e) => {
         todayCard.className = "card";
         const nameOfDay = document.createElement("p");
         nameOfDay.className = "day";
+        const weatherImage = document.createElement("img");
         const description = document.createElement("p");
         description.className = "description";
         const temp = document.createElement("p");
@@ -43,6 +41,10 @@ button.addEventListener("click", (e) => {
         // Get the description of the weather and add it to our p element called description
         description.innerText = forecastlist[0]["weather"][0].description;
         todayCard.appendChild(description)
+        // add image
+        const weatherIcon = forecastlist[0]["weather"][0].icon;
+        weatherImage.setAttribute("src", "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png" )
+        todayCard.appendChild(weatherImage)
 
         // Get the temperature and add it to the p element temp and add it to our card
         temp.innerText = "Current Temperature : " + forecastlist[0]["main"]["temp"] + "°C"
