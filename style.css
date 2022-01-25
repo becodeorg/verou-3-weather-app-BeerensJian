@@ -44,6 +44,9 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.555);
     margin: 40px;
     border-radius: 5px;
+    text-align: center;
+    position: relative;
+    color: rgb(58, 58, 58);
 }
 .card .dateinfo {
     text-align: right;
@@ -53,6 +56,15 @@ body {
 .card .day {
     font-size: 30px;
     padding: 6px 0;
+}
+.description {
+    margin-top: 10px;
+}
+.temp {
+    font-size: 40px;
+    position: absolute;
+    top: 20px;
+    left:10px;
 }
 
 

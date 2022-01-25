@@ -54,15 +54,29 @@ button.addEventListener("click", (e) => {
                 month.innerText = getNameMonth(daydate);
                 dayHeader.append(cardTitle, dayInMonth, month);
                 newCard.appendChild(dayHeader);
+                //////////////////////////////////////////////////////// Rest of card information v
+                const descpara = document.createElement("p")
+                descpara.className = "description"
+                const descimg = document.createElement("img");
+                descimg.setAttribute("width", "100px");
+                const iconid = weekdata[i].weather[0].icon;
+                const iconurl = "http://openweathermap.org/img/wn/"+ iconid +"@2x.png";
+                const desc = weekdata[i].weather[0].description;
+                descimg.setAttribute("src", iconurl);
+                
+                descpara.innerText = desc;
+                newCard.append(descpara, descimg);
 
+                const tempEl = document.createElement("p");
+                tempEl.className = "temp";
+                tempEl.innerText = Math.round(weekdata[i].temp.day) + "°C";
+                newCard.appendChild(tempEl);
 
-
-
-
+                
+                
+                
+                
                 cardcontainer.appendChild(newCard);
-
-
-
             }
         })
     })
