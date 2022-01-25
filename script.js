@@ -18,62 +18,47 @@ button.addEventListener("click", (e) => {
         titleElement.innerHTML = nameValue;
         // display the city name
 
-        // variable with the weather of right now
-        const forecastlist = data['list']
-        console.log(forecastlist[0])
+        // get the lat and lon of the location
+        const lat = data["city"]["coord"].lat;
+        const lon = data["city"]["coord"].lon;
+        console.log(lat, lon)
 
-        // Make card and display the weather of right now
-        const todayCard = document.createElement("div");
-        todayCard.className = "card";
-        const nameOfDay = document.createElement("p");
-        nameOfDay.className = "day";
-        const weatherImage = document.createElement("img");
-        const description = document.createElement("p");
-        description.className = "description";
-        const temp = document.createElement("p");
-        temp.className = "temp"
-
-        // Get the date convert it into the day
-        const daydate = forecastlist[0]["dt_txt"];
-        nameOfDay.innerText = getDayName(daydate);
-        todayCard.appendChild(nameOfDay); // Add it to the created card
-
-        // Get the description of the weather and add it to our p element called description
-        description.innerText = forecastlist[0]["weather"][0].description;
-        todayCard.appendChild(description)
-        // add image
-        const weatherIcon = forecastlist[0]["weather"][0].icon;
-        weatherImage.setAttribute("src", "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png" )
-        todayCard.appendChild(weatherImage)
-
-        // Get the temperature and add it to the p element temp and add it to our card
-        temp.innerText = "Current Temperature : " + forecastlist[0]["main"]["temp"] + "°C"
-        todayCard.appendChild(temp)
+        fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&units=metric&appid=" + Data.key)
+        .then(response => response.json())
+        .then(data => {
+            const weekdata = data.daily;
+            console.log(weekdata)
+            /*
+                For each day generate a card with elements gethered from the OpenWeather API.
+                daydate.getDate() -> get the day of the month
+                daydate.getDay() -> returns a value 0-6 corresponding to day in the week
+                TODO: Append name of the weekday, number of day in the month, and month in dateinfo
+            */
+            for (let i = 0; i < weekdata.length ; i++) {
+                const newCard = document.createElement("div");         
+                newCard.className = "card";
+                const dayHeader = document.createElement("div")
+                dayHeader.className = "dateinfo"
+                const cardTitle = document.createElement("p")
+                cardTitle.className = "day"
+                
+                const unixtime = weekdata[i].dt;
+                const daydate = new Date(unixtime * 1000); // converts the unix time to miliseconds unix time so it can work with Date()
+                
 
 
 
 
 
-
-
-
-
-
-        // Append the new card to the body
-        cardcontainer.appendChild(todayCard);
-
+            }
+        })
     })
 
     .catch(err => alert("Wrong city name!"))
 
 })
 
-// Function to get the name of the day
-const getDayName = (datestring) => {
-    const names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const dateonly = datestring.split(" ")
-    const d = dateonly[0].split("-")
-    const newDate = new Date(d[0],d[1] -1, d[2]).getDay()
-    return names[newDate];
-} // Function to get the name of the day
-
+function getNameDay(dayNumber) {
+    names = ["Sunday", "Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    return names[dayNumber.getDay()]
+}

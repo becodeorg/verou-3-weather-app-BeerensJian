@@ -45,10 +45,14 @@ body {
     margin: 40px;
     border-radius: 5px;
 }
+.card .dateinfo {
+    text-align: right;
+    background-color: whitesmoke;
+}
+
 .card .day {
     font-size: 30px;
     padding: 6px 0;
-    text-align: center;
 }
 
 
