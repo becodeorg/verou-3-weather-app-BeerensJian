@@ -2,11 +2,16 @@ const button = document.querySelector("input[type='submit']")
 const cityInput = document.querySelector("#cityInput")
 
 const displayDiv = document.querySelector(".displayData")
+const cardcontainer = displayDiv.children[1]
+
+import Data from "./config.js";
+console.log(Data.key);  
+
 
 
 button.addEventListener("click", (e) => {
     e.preventDefault()
-    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=75ca701220c90ca023b334a8eaafed66")
+    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=" + key)
     .then(response => response.json())
     .then(data => {
         // display the city name
@@ -16,7 +21,7 @@ button.addEventListener("click", (e) => {
         titleElement.innerHTML = nameValue;
         // display the city name
 
-        // 
+        // variable with the weather of right now
         const forecastlist = data['list']
         console.log(forecastlist[0])
 
@@ -32,12 +37,28 @@ button.addEventListener("click", (e) => {
 
         // Get the date convert it into the day
         const daydate = forecastlist[0]["dt_txt"];
-        
-        nameOfDay.innerText = getDay(daydate);
-        todayCard.appendChild(nameOfDay);
+        nameOfDay.innerText = getDayName(daydate);
+        todayCard.appendChild(nameOfDay); // Add it to the created card
+
+        // Get the description of the weather and add it to our p element called description
+        description.innerText = forecastlist[0]["weather"][0].description;
+        todayCard.appendChild(description)
+
+        // Get the temperature and add it to the p element temp and add it to our card
+        temp.innerText = "Current Temperature : " + forecastlist[0]["main"]["temp"] + "°C"
+        todayCard.appendChild(temp)
+
+
+
+
+
+
+
+
+
 
         // Append the new card to the body
-        displayDiv.appendChild(todayCard);
+        cardcontainer.appendChild(todayCard);
 
     })
 
@@ -45,13 +66,12 @@ button.addEventListener("click", (e) => {
 
 })
 
-
-const date = "2022-01-24 21:00:00"
-const getDay = (datestring) => {
+// Function to get the name of the day
+const getDayName = (datestring) => {
     const names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dateonly = datestring.split(" ")
     const d = dateonly[0].split("-")
-    const newDate = new Date(d[2],d[1] -1,[0]).getDay()
+    const newDate = new Date(d[0],d[1] -1, d[2]).getDay()
     return names[newDate];
-}
-getDay(date);
+} // Function to get the name of the day
+
