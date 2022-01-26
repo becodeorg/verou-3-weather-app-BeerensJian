@@ -8,6 +8,8 @@ import Data from "./config.js";
   
 button.addEventListener("click", (e) => {
     e.preventDefault()
+    cardcontainer.innerHTML = "";
+    displayDiv.children[0].innerHTML = "";
     fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=" + Data.key)
     .then(response => response.json())
     .then(data => {
@@ -28,14 +30,39 @@ button.addEventListener("click", (e) => {
         .then(data => {
             const weekdata = data.daily;
             console.log(weekdata)
-            /*
-                For each day generate a card with elements gethered from the OpenWeather API.
-                daydate.getDate() -> get the day of the month
-                daydate.getDay() -> returns a value 0-6 corresponding to day in the week
-                TODO: Grab the description, icon, temp and feels like temp and append them to NewCard
-            */
+
             for (let i = 0; i < weekdata.length ; i++) {
-                const newCard = document.createElement("div");         
+                addCard(weekdata, i)
+            }
+
+            const myChart = document.getElementById("myChart")
+
+            const cardstitles = cardcontainer.children.children[0];
+            console.log(cardstitles)
+
+
+            
+
+            
+        })
+    })
+
+    .catch(err => alert("Wrong city name!"))
+
+})
+
+function getNameDay(datee) {
+    const names = ["Sunday", "Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    return names[datee.getDay()]
+}
+
+function getNameMonth(datee) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return months[datee.getMonth()]
+}
+
+function addCard(weekdata, i) {
+    const newCard = document.createElement("div");         
                 newCard.className = "card";
                 const dayHeader = document.createElement("div")
                 dayHeader.className = "dateinfo"
@@ -71,26 +98,6 @@ button.addEventListener("click", (e) => {
                 tempEl.className = "temp";
                 tempEl.innerText = Math.round(weekdata[i].temp.day) + "°C";
                 newCard.appendChild(tempEl);
-
-                
-                
-                
                 
                 cardcontainer.appendChild(newCard);
-            }
-        })
-    })
-
-    .catch(err => alert("Wrong city name!"))
-
-})
-
-function getNameDay(datee) {
-    const names = ["Sunday", "Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    return names[datee.getDay()]
-}
-
-function getNameMonth(datee) {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    return months[datee.getMonth()]
 }
