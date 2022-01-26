@@ -36,10 +36,12 @@ body {
 .cardcontainer {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 .card {
     border:1px solid rgba(185, 176, 176, 0.432);
-    width: 300px;
+    width: 30%;
+    min-width: 300px;
     background-color: rgba(255, 255, 255, 0.685);
     border: 2px solid rgba(255, 255, 255, 0.555);
     margin: 40px;
@@ -79,4 +81,24 @@ input[type="submit"] {
     padding: 4px;
     height: 40px;
     font-size: 20px;
+}
+
+@media only screen and (max-width: 948px) {
+    .card {
+        width: 70%;
+    }
+
+    input[type="text"] {
+        width: 50%
+    }
+}
+@media only screen and (max-width: 515px) {
+    .card {
+        width: 70%;
+        min-width: 250px;
+    }
+
+    input[type="text"] {
+        width: 50%
+    }
 }
