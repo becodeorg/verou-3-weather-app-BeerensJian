@@ -24,6 +24,7 @@ body {
     margin: auto;
     box-shadow: 0px 0px 50px rgba(255, 255, 255, 0.534);
     border-radius: 10px;
+    padding-bottom: 50px;
 }
 .displayData h1 {
     font-size: 50px;
@@ -42,6 +43,7 @@ body {
     border:1px solid rgba(185, 176, 176, 0.432);
     width: 30%;
     min-width: 300px;
+    max-width: 400px;
     background-color: rgba(255, 255, 255, 0.685);
     border: 2px solid rgba(255, 255, 255, 0.555);
     margin: 40px;
@@ -53,6 +55,8 @@ body {
 .card .dateinfo {
     text-align: right;
     background-color: whitesmoke;
+    padding-right: 5px;
+    padding-bottom: 5px;
 }
 
 .card .day {
@@ -67,6 +71,13 @@ body {
     position: absolute;
     top: 20px;
     left:10px;
+}
+
+.chart {
+    background-color: rgba(255, 255, 255, 0.87);
+    width: 90%;
+    margin: auto;
+    border-radius: 5px;
 }
 
 
