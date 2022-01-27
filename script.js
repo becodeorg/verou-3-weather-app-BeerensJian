@@ -4,9 +4,42 @@ const cityInput = document.querySelector("#cityInput")
 const displayDiv = document.querySelector(".displayData")
 const cardcontainer = displayDiv.children[1]
 
-// variables for graphJS
-let lables = new Array();
-let graphdata = new Array()
+
+
+const ctx = document.getElementById("myChart");
+const context = ctx.getContext("2d")
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: "",
+        datasets: [{
+            label: 'Temperature in °C',
+            data: "",
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+function updateConfigByMutating(chart, lables, graphdata) {
+    chart.data.labels = lables;
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data = graphdata;
+    });
+    chart.update();
+}
 
 import Data from "./config.js";
 
@@ -14,6 +47,9 @@ button.addEventListener("click", (e) => {
     e.preventDefault()
     cardcontainer.innerHTML = "";
     displayDiv.children[0].innerHTML = "";
+    // variables for graphJS
+    let lables = new Array();
+    let graphdata = new Array()
     fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=" + Data.key)
         .then(response => response.json())
         .then(data => {
@@ -35,36 +71,11 @@ button.addEventListener("click", (e) => {
                     console.log(weekdata)
 
                     for (let i = 0; i < weekdata.length; i++) {
-                        addCard(weekdata, i)
+                        addCard(weekdata, i, lables, graphdata);
                     }
-
-                    const ctx = document.getElementById('myChart');
-                    const myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: lables,
-                            datasets: [{
-                                label: 'Temperature in °C',
-                                data: graphdata,
-                                backgroundColor: [
-                                    'rgba(54, 162, 235, 0.2)',
-                                ],
-                                borderColor: [
-                                    'rgba(54, 162, 235, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
+                    console.log(lables, graphdata);
+                    updateConfigByMutating(myChart, lables, graphdata);
                     
-                
                 })
         })
 
@@ -82,7 +93,7 @@ function getNameMonth(datee) {
     return months[datee.getMonth()]
 }
 
-function addCard(weekdata, i) {
+function addCard(weekdata, i, lables, graphdata) {
     const newCard = document.createElement("div");
     newCard.className = "card";
     const dayHeader = document.createElement("div")
