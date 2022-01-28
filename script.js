@@ -83,7 +83,7 @@ button.addEventListener("click", (e) => {
 })
 
 function getNameDay(datee) {
-    const names = ["Sunday", "Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     return names[datee.getDay()]
 }
 
