@@ -7,7 +7,6 @@ const cardcontainer = displayDiv.children[1]
 
 
 const ctx = document.getElementById("myChart");
-const context = ctx.getContext("2d")
 const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -49,7 +48,7 @@ button.addEventListener("click", (e) => {
     displayDiv.children[0].innerHTML = "";
     // variables for graphJS
     let lables = new Array();
-    let graphdata = new Array()
+    let graphdata = new Array();
     fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=metric&appid=" + Data.key)
         .then(response => response.json())
         .then(data => {
