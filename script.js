@@ -37,18 +37,20 @@ const fetchData = (lat, lon, lables, graphdata) => {
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&units=metric&appid=" + Data.key)
     .then(response => response.json())
     .then(data => {
-        const weekdata = data.daily;
-        console.log(weekdata)
-
-        for (let i = 0; i < weekdata.length; i++) {
-            addCard(weekdata, i, lables, graphdata);
-        }
-        
-
-        document.querySelector(".chart").style.display = "block"
-        updateConfigByMutating(myChart, lables, graphdata);
-        loadImgs()
+        processData(data, lables, graphdata)
     })
+}
+
+const processData = (data, lables, graphdata) => {
+    const weekdata = data.daily;
+
+    for (let i = 0; i < weekdata.length; i++) {
+        addCard(weekdata, i, lables, graphdata);
+    }
+    
+    document.querySelector(".chart").style.display = "block"
+    updateConfigByMutating(myChart, lables, graphdata);
+    loadImgs()
 }
 
 function updateConfigByMutating(chart, lables, graphdata) {
