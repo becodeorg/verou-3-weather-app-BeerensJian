@@ -1,3 +1,4 @@
+import Data from "./config.js";
 const button = document.querySelector("input[type='submit']")
 const cityInput = document.querySelector("#cityInput")
 
@@ -32,6 +33,24 @@ const myChart = new Chart(ctx, {
     }
 });
 
+const fetchData = (lat, lon, lables, graphdata) => {
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&units=metric&appid=" + Data.key)
+    .then(response => response.json())
+    .then(data => {
+        const weekdata = data.daily;
+        console.log(weekdata)
+
+        for (let i = 0; i < weekdata.length; i++) {
+            addCard(weekdata, i, lables, graphdata);
+        }
+        
+
+        document.querySelector(".chart").style.display = "block"
+        updateConfigByMutating(myChart, lables, graphdata);
+        loadImgs()
+    })
+}
+
 function updateConfigByMutating(chart, lables, graphdata) {
     chart.data.labels = lables;
     chart.data.datasets.forEach((dataset) => {
@@ -39,8 +58,6 @@ function updateConfigByMutating(chart, lables, graphdata) {
     });
     chart.update();
 }
-
-import Data from "./config.js";
 
 button.addEventListener("click", (e) => {
     e.preventDefault()
@@ -63,19 +80,8 @@ button.addEventListener("click", (e) => {
             const lon = data["city"]["coord"].lon;
             console.log(lat, lon)
 
-            fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&units=metric&appid=" + Data.key)
-                .then(response => response.json())
-                .then(data => {
-                    const weekdata = data.daily;
-                    console.log(weekdata)
-
-                    for (let i = 0; i < weekdata.length; i++) {
-                        addCard(weekdata, i, lables, graphdata);
-                    }
-                    console.log(lables, graphdata);
-                    updateConfigByMutating(myChart, lables, graphdata);
-                    
-                })
+            fetchData(lat, lon, lables, graphdata)
+            
         })
 
         .catch(err => alert("Wrong city name!"))
@@ -136,4 +142,28 @@ function addCard(weekdata, i, lables, graphdata) {
     newCard.appendChild(tempEl);
 
     cardcontainer.appendChild(newCard);
+}
+
+function loadImgs() {
+    const imgcontainer = document.querySelector(".pictures")
+
+    const key = "U-X2th9ZLuaaQOCfH-Ygn1F_WooQcKjcXUjzlWX5FoA"
+    const url = "https://api.unsplash.com/search/photos?query=" + cityInput.value + "&client_id=" + key;
+
+    fetch(url)
+
+    .then (response => response.json())
+    .then (data => {
+        console.log(data.results);
+        const imgList = data.results;
+
+        for (let i = 0; i< imgList.length ; i++) {
+
+        
+        const img = document.createElement("img")
+        img.className = "img"
+        img.setAttribute("src", imgList[i].urls.regular)
+        imgcontainer.appendChild(img)
+        }
+    })
 }
